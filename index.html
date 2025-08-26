@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>芒格思维模型卡片集 | Munger Mental Models</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 20px 10px;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f7f9fc;
+      color: #2d3436;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      flex-direction: column;
+      box-sizing: border-box;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      font-size: 1.5rem;
+      text-align: center;
+      color: #0984e3;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 320px;
+      aspect-ratio: 3/4;
+      perspective: 1000px;
+      margin-bottom: 20px;
+    }
+
+    .card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+      transition: transform 0.8s;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      border-radius: 12px;
+    }
+
+    .card.flipped .card-inner {
+      transform: rotateY(180deg);
+    }
+
+    .card-face {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      background: #ffffff;
+      border-radius: 12px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .card-front {
+      font-size: 5rem;
+      color: #0984e3;
+      font-weight: bold;
+    }
+
+    .card-back {
+      transform: rotateY(180deg);
+      text-align: left;
+      overflow-y: auto;
+    }
+
+    .card-back h2 {
+      margin: 0 0 10px 0;
+      font-size: 1.2rem;
+      color: #0984e3;
+    }
+
+    .card-back p {
+      margin: 5px 0;
+      line-height: 1.4;
+    }
+
+    .progress {
+      margin-bottom: 15px;
+      font-size: 1rem;
+      color: #2d3436;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+      width: 100%;
+    }
+
+    button {
+      flex: 1;
+      min-width: 100px;
+      padding: 10px 12px;
+      border: none;
+      border-radius: 6px;
+      background-color: #0984e3;
+      color: #ffffff;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: background-color 0.3s, opacity 0.3s;
+    }
+
+    button:hover:not(:disabled) {
+      background-color: #066bb3;
+    }
+
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 1.2rem;
+      }
+      .card-front {
+        font-size: 3.5rem;
+      }
+      button {
+        flex: 1 1 45%;
+        font-size: 0.85rem;
+        padding: 8px 10px;
+      }
+    }
+
+    @media (max-width: 350px) {
+      .buttons {
+        flex-direction: column;
+      }
+      button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>芒格思维模型</h1>
+
+    <!-- Flip Card -->
+    <div class="card" id="card">
+      <div class="card-inner">
+        <div class="card-face card-front" id="card-front">复</div>
+        <div class="card-face card-back" id="card-back">
+          <div>
+            <h2 id="model-name">复利效应 (Compound Effect)</h2>
+            <p id="explanation">小的积累长期放大 → 财富/知识/关系都靠它。</p>
+            <p id="example">生活例子：每天读 10 页书，10 年就是 36000 页。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Progress Indicator -->
+    <div class="progress" id="progress">1/10</div>
+
+    <!-- Navigation Buttons -->
+    <div class="buttons">
+      <button id="prev-btn">Previous</button>
+      <button id="next-btn">Next</button>
+      <button id="random-btn">Random</button>
+      <button id="flip-btn">Flip</button>
+    </div>
+  </div>
+
+  <script>
+    const mentalModels = [
+      { name: "复利效应 (Compound Effect)", hint: "复", explanation: "小的积累长期放大 → 财富/知识/关系都靠它。", example: "生活例子：每天读 10 页书，10 年就是 36000 页。" },
+      { name: "机会成本 (Opportunity Cost)", hint: "机", explanation: "每个选择的代价是“放弃的下一个最好机会”。", example: "生活例子：点了牛排，就吃不了寿司。" },
+      { name: "边际效用递减 (Diminishing Marginal Utility)", hint: "边", explanation: "投入增加，回报逐渐下降。", example: "生活例子：吃第一片披萨最香，第五片就腻。" },
+      { name: "激励机制 (Incentives)", hint: "激", explanation: "激励决定行为。", example: "生活例子：孩子写作业快慢取决于有没有奖励。" },
+      { name: "社会认同 (Social Proof)", hint: "社", explanation: "多数人的选择会影响个体判断。", example: "生活例子：大家都排队买奶茶，你也想买。" },
+      { name: "确认偏差 (Confirmation Bias)", hint: "确", explanation: "人总找能证明自己是对的证据。", example: "生活例子：信星座的人只记得“准”的部分。" },
+      { name: "逆向思维 (Inversion)", hint: "逆", explanation: "倒过来想，先避坑再谈成功。", example: "生活例子：考试要过关，不光是会答题，还要避免丢分。" },
+      { name: "临界点 (Tipping Point)", hint: "临", explanation: "量变到一定程度会质变。", example: "生活例子：气球吹到极限会突然爆炸。" },
+      { name: "护城河 (Moat)", hint: "护", explanation: "企业必须有抵御竞争的优势。", example: "生活例子：可口可乐的品牌力。" },
+      { name: "熵增 (Entropy)", hint: "熵", explanation: "系统自然会走向混乱，需要能量维持秩序。", example: "生活例子：房间不整理就会越来越乱。" }
+    ];
+
+    let currentIndex = 0;
+    const card = document.getElementById('card');
+    const cardFront = document.getElementById('card-front');
+    const cardBackName = document.getElementById('model-name');
+    const cardBackExplanation = document.getElementById('explanation');
+    const cardBackExample = document.getElementById('example');
+    const progress = document.getElementById('progress');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const randomBtn = document.getElementById('random-btn');
+    const flipBtn = document.getElementById('flip-btn');
+
+    function renderCard(index) {
+      const model = mentalModels[index];
+      cardFront.textContent = model.hint;
+      cardBackName.textContent = model.name;
+      cardBackExplanation.textContent = model.explanation;
+      cardBackExample.textContent = model.example;
+      progress.textContent = `${index + 1}/${mentalModels.length}`;
+      updateButtons();
+    }
+
+    function updateButtons() {
+      prevBtn.disabled = currentIndex === 0;
+      nextBtn.disabled = currentIndex === mentalModels.length - 1;
+    }
+
+    function flipCard() {
+      card.classList.toggle('flipped');
+    }
+
+    function navigateCards(direction) {
+      if (direction === 'prev' && currentIndex > 0) currentIndex--;
+      else if (direction === 'next' && currentIndex < mentalModels.length - 1) currentIndex++;
+      card.classList.remove('flipped');
+      renderCard(currentIndex);
+    }
+
+    function getRandomCard() {
+      let randomIndex;
+      do {
+        randomIndex = Math.floor(Math.random() * mentalModels.length);
+      } while (randomIndex === currentIndex);
+      currentIndex = randomIndex;
+      card.classList.remove('flipped');
+      renderCard(currentIndex);
+    }
+
+    flipBtn.addEventListener('click', flipCard);
+    prevBtn.addEventListener('click', () => navigateCards('prev'));
+    nextBtn.addEventListener('click', () => navigateCards('next'));
+    randomBtn.addEventListener('click', getRandomCard);
+
+    // --- Mobile Swipe Support ---
+    let startX = 0, startY = 0;
+    card.addEventListener('touchstart', (e) => {
+      startX = e.touches[0].clientX;
+      startY = e.touches[0].clientY;
+    });
+
+    card.addEventListener('touchend', (e) => {
+      let endX = e.changedTouches[0].clientX;
+      let endY = e.changedTouches[0].clientY;
+      let diffX = endX - startX;
+      let diffY = endY - startY;
+
+      if (Math.abs(diffX) > Math.abs(diffY)) {
+        // Horizontal swipe
+        if (diffX < -50) navigateCards('next');   // swipe left
+        if (diffX > 50) navigateCards('prev');    // swipe right
+      } else {
+        // Vertical swipe
+        if (diffY < -50 || diffY > 50) flipCard(); // up or down
+      }
+    });
+
+    renderCard(currentIndex);
+  </script>
+</body>
+</html>
